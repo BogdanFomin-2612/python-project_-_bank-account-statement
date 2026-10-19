@@ -18,15 +18,18 @@ z biblioteki standardowej, więc nic nie trzeba instalować.
 python main.py
 ```
 
-Program zapyta o ścieżkę do pliku z wyciągiem, np. `dane/wyciag.csv`.
-Wyciąg w formacie CSV można pobrać w aplikacji Monobank.
+Program zapyta o ścieżkę do pliku z wyciągiem. Do sprawdzenia programu jest
+przykładowy plik `dane/example_report.csv` – ma taki sam format jak prawdziwy
+wyciąg z Monobanku, ale dane są wymyślone. Własny wyciąg w formacie CSV można
+pobrać w aplikacji Monobank.
 
 ## Struktura projektu
 
 ```
 ├── main.py              # punkt wejścia: pyta o plik i wypisuje wyniki
 ├── kategorie.json       # reguły przypisywania kategorii
-├── dane/                # tu wrzucam wyciągi (prawdziwe nie trafiają do repozytorium)
+├── dane/
+│   └── example_report.csv  # przykładowy wyciąg (prawdziwe nie trafiają do repozytorium)
 └── monobank/            # pakiet z całą logiką
     ├── transakcja.py    # klasa Transakcja
     ├── czytniki.py      # wczytywanie pliku CSV
@@ -130,6 +133,4 @@ Jeśli płatność była w hrywnach, pokazywana jest tylko kwota w UAH.
 - statystyki na numpy (średnia, mediana, odchylenie standardowe, trend),
 - zapis raportu do pliku tekstowego i wykresy (matplotlib),
 - menu w konsoli,
-- wczytywanie wyciągów w formacie XLSX i PDF,
-- przykładowy plik z danymi (`dane/przyklad.csv`), żeby można było uruchomić
-  program bez prawdziwego wyciągu.
+- wczytywanie wyciągów w formacie XLSX i PDF.

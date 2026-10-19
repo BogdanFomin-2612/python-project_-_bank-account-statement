@@ -9,4 +9,4 @@ venv/
 
 # prawdziwe wyciągi nie trafiają do repozytorium, tylko plik przykładowy
 dane/*
-!dane/przyklad*
+!dane/example_report.csv
