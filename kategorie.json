@@ -1,0 +1,24 @@
+{
+    "pomijane": ["копилка", "dott"],
+    "slowa_kluczowe": {
+        "Subskrypcje": ["youtube", "spotify", "netflix"]
+    },
+    "mcc": {
+        "5411": "Spożywcze",
+        "5499": "Spożywcze",
+        "5812": "Gastronomia",
+        "5814": "Gastronomia",
+        "4111": "Transport",
+        "4121": "Taxi",
+        "5541": "Paliwo",
+        "5542": "Paliwo",
+        "4814": "Telefon",
+        "4899": "Subskrypcje",
+        "5262": "Zakupy",
+        "5311": "Zakupy",
+        "5651": "Odzież",
+        "5691": "Odzież",
+        "5912": "Apteka",
+        "7832": "Rozrywka"
+    }
+}
