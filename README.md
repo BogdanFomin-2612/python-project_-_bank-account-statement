@@ -1,5 +1,5 @@
 # Analizator wyciągów Monobank
-# Bohdan Fomin 83044 INLS5
+**Autor:** Bohdan Fomin, nr albumu 83044, grupa INLS5
 Projekt zaliczeniowy z przedmiotu **Programowanie w Pythonie** (WSB Merito Gdańsk).
 
 Program konsolowy, który wczytuje wyciąg z karty Monobank, przypisuje każdej
