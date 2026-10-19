@@ -1,0 +1,12 @@
+__pycache__/
+*.pyc
+.venv/
+venv/
+.env
+.idea/
+.vscode/
+.omc/
+
+# prawdziwe wyciągi nie trafiają do repozytorium, tylko plik przykładowy
+dane/*
+!dane/przyklad*
