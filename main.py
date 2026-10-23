@@ -14,7 +14,7 @@ PLIK_REGUL = "kategorie.json"
 
 def main():
     # strip('"') - Windows dodaje cudzysłowy przy "Kopiuj jako ścieżkę"
-    sciezka = input("Podaj ścieżkę do pliku z wyciągiem: ").strip().strip('"')
+    sciezka = input("Podaj ścieżkę do pliku z wyciągiem (np. dane/example_report.csv): ").strip().strip('"')
 
     try:
         wszystkie = wczytaj_plik(sciezka)
