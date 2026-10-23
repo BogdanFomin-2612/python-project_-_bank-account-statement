@@ -63,14 +63,17 @@ Niektóre operacje nie są prawdziwymi wydatkami, więc je pomijam:
 
 - **Skarbonka** (po ukraińsku „Копилка”) – Monobank zaokrągla płatności i odkłada
   resztę do skarbonki. To przekładanie moich własnych pieniędzy, a nie wydatek.
-- **Dott** – przejazdy hulajnogami. W moim wyciągu każdy przejazd był od razu
-  anulowany (płatność + zwrot), więc tylko zaśmiecały listę.
+
+**Zwroty** nie są pomijane. Np. Dott (hulajnogi) najpierw blokuje 7 zł, a po przejeździe
+oddaje całość albo część jako `Cancellation. Dott`. Takie wiersze rozpoznaję wyrażeniem
+regularnym `^Cancellation\.` i odejmuję od kategorii zakupu (tu: Transport),
+zamiast liczyć je jako wpływ. Dzięki temu widać, ile przejazd naprawdę kosztował.
 
 ### 3. Przypisanie kategorii
 
 Każda transakcja dostaje kategorię w tej kolejności:
 
-1. kwota dodatnia (wpływ na konto) → `Wpływy`,
+1. kwota dodatnia (wpływ na konto) → `Wpływy` – chyba że to zwrot (`Cancellation. ...`),
 2. w opisie jest słowo kluczowe z `kategorie.json` (np. `youtube`) → kategoria tego słowa,
 3. kod MCC transakcji jest w `kategorie.json` → kategoria z tego kodu,
 4. nic nie pasuje → `Inne`.
@@ -85,8 +88,12 @@ przez wyrażenia regularne (`re.search`) bez względu na wielkość liter.
 ### 4. Podsumowanie
 
 Funkcja `sumy_wedlug_kategorii()` przechodzi po wszystkich wydatkach i sumuje kwoty
-w słowniku `kategoria -> [suma w UAH, suma w PLN]`. Potem zamienia go na listę krotek
-i sortuje od największego wydatku. Wpływy nie są tu liczone.
+w słowniku `kategoria -> [suma w UAH, suma w PLN]`. Potem zamienia go na listę krotek i sortuje od największego wydatku. Wpływy nie są tu liczone, a zwroty zmniejszają
+sumę swojej kategorii.
+
+Program liczy też łączny **cashback** i **prowizje** banku z kolumn
+`Cashback amount` i `Commission`. Pusta wartość jest w nich oznaczona znakiem `—`,
+dlatego funkcja `na_liczbe()` zamienia go na 0.
 
 ## Plik kategorie.json
 
@@ -95,7 +102,7 @@ nie trzeba zmieniać kodu.
 
 ```json
 {
-    "pomijane": ["копилка", "dott"],
+    "pomijane": ["копилка"],
     "slowa_kluczowe": {
         "Subskrypcje": ["youtube", "spotify", "netflix"]
     },

@@ -2,10 +2,11 @@
 
 
 def sumy_wedlug_kategorii(transakcje):
-    # Słownik: kategoria -> [suma w UAH, suma w PLN]. Liczymy tylko wydatki (kwota < 0).
+    # Słownik: kategoria -> [suma w UAH, suma w PLN]. Liczymy wydatki (kwota < 0)
+    # i zwroty. Zwrot ma kwotę dodatnią, więc "+= -kwota" odejmuje go od sumy kategorii.
     sumy = {}
     for transakcja in transakcje:
-        if transakcja.kwota >= 0:
+        if transakcja.kwota >= 0 and not transakcja.zwrot:
             continue
         if transakcja.kategoria not in sumy:
             sumy[transakcja.kategoria] = [0.0, 0.0]
@@ -19,3 +20,12 @@ def sumy_wedlug_kategorii(transakcje):
     for kategoria, kwoty in sumy.items():
         wynik.append((kategoria, kwoty[0], kwoty[1]))
     return sorted(wynik, key=lambda krotka: krotka[1], reverse=True)
+
+
+def suma_cashbacku(transakcje):
+    # Przy zwrocie bank cofa cashback (wartość ujemna), więc suma od razu to uwzględnia.
+    return sum(transakcja.cashback for transakcja in transakcje)
+
+
+def suma_prowizji(transakcje):
+    return sum(transakcja.prowizja for transakcja in transakcje)

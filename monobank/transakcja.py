@@ -2,14 +2,17 @@
 
 
 class Transakcja:
-    def __init__(self, data, opis, mcc, kwota, kwota_w_walucie, waluta):
+    def __init__(self, data, opis, mcc, kwota, kwota_w_walucie, waluta, prowizja, cashback):
         self.data = data                        # obiekt datetime
         self.opis = opis                        # np. "ZABKA", "Bolt"
         self.mcc = mcc                          # kod rodzaju sprzedawcy (Merchant Category Code)
         self.kwota = kwota                      # kwota w UAH: minus = wydatek, plus = wpływ
         self.kwota_w_walucie = kwota_w_walucie  # kwota w walucie operacji (np. w PLN)
         self.waluta = waluta                    # waluta operacji, np. "UAH", "PLN"
+        self.prowizja = prowizja                # prowizja banku w UAH (zwykle 0)
+        self.cashback = cashback                # cashback w UAH (minus = bank go cofnął przy zwrocie)
         self.kategoria = ""                     # uzupełniana później w kategorie.py
+        self.zwrot = False                      # True dla "Cancellation. ..." - ustawiane w kategorie.py
 
     def __str__(self):
         data_tekst = self.data.strftime("%d.%m.%Y %H:%M")

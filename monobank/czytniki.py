@@ -13,6 +13,7 @@ FORMAT_DATY = "%d.%m.%Y %H:%M:%S"   # np. 23.09.2026 21:17:24
 # 0 data i godzina, 1 opis, 2 MCC, 3 kwota w UAH, 4 kwota w walucie operacji,
 # 5 waluta operacji, 6 kurs, 7 prowizja, 8 cashback, 9 saldo
 LICZBA_KOLUMN = 10
+BRAK_WARTOSCI = "—"   # Monobank wpisuje ten znak (pauzę), gdy kolumna jest pusta
 
 
 def czytaj_linie(sciezka):
@@ -20,6 +21,13 @@ def czytaj_linie(sciezka):
     with open(sciezka, encoding="utf-8", newline="") as plik:
         for linia in plik:
             yield linia
+
+
+def na_liczbe(tekst):
+    # Pusta kolumna to "—", a nie pusty tekst - float("—") by się wywalił, więc zwracamy 0.
+    if tekst == BRAK_WARTOSCI:
+        return 0.0
+    return float(tekst)
 
 
 def wczytaj_csv(sciezka):
@@ -44,6 +52,8 @@ def wczytaj_csv(sciezka):
                 kwota=float(wiersz[3]),
                 kwota_w_walucie=float(wiersz[4]),
                 waluta=wiersz[5],
+                prowizja=na_liczbe(wiersz[7]),
+                cashback=na_liczbe(wiersz[8]),
             )
         except ValueError:
             raise BladWczytywania(f"Wiersz {numer}: niepoprawna data, MCC lub kwota")

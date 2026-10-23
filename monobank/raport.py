@@ -9,3 +9,8 @@ def wypisz_sumy_kategorii(sumy):
         if pln > 0:
             tekst += f" / {pln:>8.2f} PLN"
         print(tekst)
+
+
+def wypisz_cashback_i_prowizje(cashback, prowizja):
+    print(f"\nCashback: {cashback:.2f} UAH")
+    print(f"Prowizje banku: {prowizja:.2f} UAH")

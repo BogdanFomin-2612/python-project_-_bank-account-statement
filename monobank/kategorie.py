@@ -8,6 +8,10 @@ from monobank.bledy import BladWczytywania
 KATEGORIA_INNE = "Inne"
 KATEGORIA_WPLYWY = "Wpływy"
 
+# Zwrot pieniędzy (anulowana płatność) ma w wyciągu opis "Cancellation. <sklep>",
+# np. "Cancellation. Dott". ^ = początek tekstu, \. = zwykła kropka.
+WZORZEC_ZWROTU = r"^Cancellation\."
+
 
 def wczytaj_reguly(sciezka):
     try:
@@ -33,8 +37,14 @@ def czy_pominac(transakcja, reguly):
     return pasuje(transakcja.opis, reguly["pomijane"])
 
 
+def czy_zwrot(opis):
+    return re.match(WZORZEC_ZWROTU, opis) is not None
+
+
 def znajdz_kategorie(transakcja, reguly):
-    if transakcja.kwota > 0:
+    # Zwrot ma kwotę dodatnią, ale to nie jest wpływ. Przechodzi dalej i dostaje
+    # kategorię anulowanego zakupu - ma ten sam MCC i nazwę sklepu w opisie.
+    if transakcja.kwota > 0 and not transakcja.zwrot:
         return KATEGORIA_WPLYWY
 
     # 1. słowa kluczowe z opisu - są dokładniejsze niż MCC, więc mają pierwszeństwo
@@ -56,6 +66,7 @@ def kategoryzuj(transakcje, reguly):
     for transakcja in transakcje:
         if czy_pominac(transakcja, reguly):
             continue
+        transakcja.zwrot = czy_zwrot(transakcja.opis)
         transakcja.kategoria = znajdz_kategorie(transakcja, reguly)
         wynik.append(transakcja)
     return wynik

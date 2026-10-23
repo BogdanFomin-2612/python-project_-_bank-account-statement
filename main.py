@@ -2,8 +2,8 @@
 
 from monobank.czytniki import wczytaj_plik
 from monobank.kategorie import wczytaj_reguly, kategoryzuj
-from monobank.analiza import sumy_wedlug_kategorii
-from monobank.raport import wypisz_sumy_kategorii
+from monobank.analiza import sumy_wedlug_kategorii, suma_cashbacku, suma_prowizji
+from monobank.raport import wypisz_sumy_kategorii, wypisz_cashback_i_prowizje
 from monobank.bledy import BladWczytywania, NieobslugiwanyFormat
 
 PLIK_REGUL = "kategorie.json"
@@ -29,6 +29,7 @@ def main():
         print(f"{numer:3}. {transakcja}")
 
     wypisz_sumy_kategorii(sumy_wedlug_kategorii(transakcje))
+    wypisz_cashback_i_prowizje(suma_cashbacku(transakcje), suma_prowizji(transakcje))
 
     print(f"\nWczytano transakcji: {len(wszystkie)}, pominięto: {len(wszystkie) - len(transakcje)}")
 
