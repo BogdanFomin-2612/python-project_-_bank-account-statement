@@ -44,6 +44,7 @@ w formacie CSV można pobrać w aplikacji Monobank.
 ├── main.py              # punkt wejścia: pyta o plik i wypisuje wyniki
 ├── kategorie.json       # reguły przypisywania kategorii
 ├── requirements.txt     # potrzebne biblioteki (numpy, matplotlib)
+├── setup_venv.ps1       # tworzy/naprawia .venv i instaluje zależności (Windows)
 ├── dane/
 │   └── example_report.csv  # przykładowy wyciąg (prawdziwe nie trafiają do repozytorium)
 ├── raporty/             # tu trafiają zapisane raporty .txt i wykresy .png (nie w repozytorium)
@@ -53,7 +54,7 @@ w formacie CSV można pobrać w aplikacji Monobank.
     ├── kategorie.py     # przypisywanie kategorii i rozpoznawanie zwrotów
     ├── analiza.py       # sumy według kategorii i statystyki (numpy)
     ├── raport.py        # wypisywanie podsumowania i zapis raportu do pliku .txt
-    ├── wykresy.py        # wykres kołowy wydatków według kategorii (matplotlib)
+    ├── wykresy.py       # wykres kołowy wydatków według kategorii (matplotlib)
     └── bledy.py         # własne wyjątki
 ```
 
@@ -137,9 +138,11 @@ funkcją `zapisz_raport()` do pliku `raporty/raport_<data>_<godzina>.txt`.
 
 Funkcja `zapisz_wykres_kategorii()` z `wykresy.py` rysuje wykres kołowy wydatków
 według kategorii (na podstawie `sumy_wedlug_kategorii()`) i zapisuje go jako
-`raporty/wykres_kategorii_<data>_<godzina>.png`. Wykres nie jest wyświetlany na
-ekranie (`matplotlib.use("Agg")`) – program konsolowy nie powinien czekać na
-zamknięcie okna.
+`raporty/wykres_kategorii_<data>_<godzina>.png`. Łączna suma wydatków jest w
+tytule wykresu, a w legendzie w lewym dolnym rogu – nazwa każdej kategorii razem
+z kwotą w UAH (paleta `tab20`, żeby kolory się nie powtarzały przy >10 kategoriach).
+Wykres nie jest wyświetlany na ekranie (`matplotlib.use("Agg")`) – program
+konsolowy nie powinien czekać na zamknięcie okna.
 
 Katalog `raporty/` jest tworzony automatycznie przy pierwszym zapisie i nie
 trafia do repozytorium (jest w `.gitignore`), podobnie jak prawdziwe wyciągi.
