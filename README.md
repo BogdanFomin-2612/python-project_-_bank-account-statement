@@ -43,7 +43,7 @@ w formacie CSV można pobrać w aplikacji Monobank.
 ```
 ├── main.py              # punkt wejścia: pyta o plik i wypisuje wyniki
 ├── kategorie.json       # reguły przypisywania kategorii
-├── requirements.txt     # potrzebne biblioteki (numpy)
+├── requirements.txt     # potrzebne biblioteki (numpy, matplotlib)
 ├── dane/
 │   └── example_report.csv  # przykładowy wyciąg (prawdziwe nie trafiają do repozytorium)
 ├── raporty/             # tu trafiają zapisane raporty .txt i wykresy .png (nie w repozytorium)
