@@ -10,3 +10,6 @@ venv/
 # prawdziwe wyciągi nie trafiają do repozytorium, tylko plik przykładowy
 dane/*
 !dane/example_report.csv
+
+# wygenerowane raporty i wykresy
+raporty/

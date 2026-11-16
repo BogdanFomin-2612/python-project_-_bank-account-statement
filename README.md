@@ -11,12 +11,26 @@ dlatego program pokazuje kwoty w obu walutach.
 
 ## Uruchomienie
 
-Potrzebny jest Python 3.10 lub nowszy oraz biblioteka **numpy**.
+Potrzebny jest Python 3.10 lub nowszy oraz biblioteki **numpy** i **matplotlib**.
 Wszystkie potrzebne biblioteki są w pliku `requirements.txt`:
 
 ```
 pip install -r requirements.txt
 python main.py
+```
+
+### Jeśli `.venv` się zepsuje
+
+Na Windows `python.exe` instalowany przez `py`/winget trzyma wersje w
+`C:\Users\<użytkownik>\AppData\Local\Python\pythoncore-X.Y-64\`. Po aktualizacji
+Pythona stara wersja bywa usuwana, a stworzone wcześniej `.venv` nadal na nią
+wskazuje - stąd błąd `did not find executable at '...\pythoncore-X.Y-64\python.exe'`.
+
+Naprawa: uruchom `setup_venv.ps1` (PowerShell) - wykrywa uszkodzone `.venv`,
+tworzy je od nowa i instaluje zależności:
+
+```
+.\setup_venv.ps1
 ```
 
 Program zapyta o ścieżkę do pliku z wyciągiem. Do sprawdzenia programu jest
@@ -32,12 +46,14 @@ w formacie CSV można pobrać w aplikacji Monobank.
 ├── requirements.txt     # potrzebne biblioteki (numpy)
 ├── dane/
 │   └── example_report.csv  # przykładowy wyciąg (prawdziwe nie trafiają do repozytorium)
+├── raporty/             # tu trafiają zapisane raporty .txt i wykresy .png (nie w repozytorium)
 └── monobank/            # pakiet z całą logiką
     ├── transakcja.py    # klasa Transakcja
     ├── czytniki.py      # wczytywanie pliku CSV
     ├── kategorie.py     # przypisywanie kategorii i rozpoznawanie zwrotów
     ├── analiza.py       # sumy według kategorii i statystyki (numpy)
-    ├── raport.py        # wypisywanie podsumowania
+    ├── raport.py        # wypisywanie podsumowania i zapis raportu do pliku .txt
+    ├── wykresy.py        # wykres kołowy wydatków według kategorii (matplotlib)
     └── bledy.py         # własne wyjątki
 ```
 
@@ -113,6 +129,21 @@ dlatego funkcja `na_liczbe()` zamienia go na 0.
   następnego miesiąca. Liczę ją dopiero od 3 miesięcy – przy mniejszej liczbie
   program pisze, że danych jest za mało.
 
+### 6. Zapis raportu i wykres (matplotlib)
+
+Funkcje `wypisz_*()` z `raport.py` oprócz wypisywania na ekran zwracają też swoje
+wiersze jako listę tekstu. `main.py` zbiera te listy w jeden raport i zapisuje go
+funkcją `zapisz_raport()` do pliku `raporty/raport_<data>_<godzina>.txt`.
+
+Funkcja `zapisz_wykres_kategorii()` z `wykresy.py` rysuje wykres kołowy wydatków
+według kategorii (na podstawie `sumy_wedlug_kategorii()`) i zapisuje go jako
+`raporty/wykres_kategorii_<data>_<godzina>.png`. Wykres nie jest wyświetlany na
+ekranie (`matplotlib.use("Agg")`) – program konsolowy nie powinien czekać na
+zamknięcie okna.
+
+Katalog `raporty/` jest tworzony automatycznie przy pierwszym zapisie i nie
+trafia do repozytorium (jest w `.gitignore`), podobnie jak prawdziwe wyciągi.
+
 ## Plik kategorie.json
 
 Wszystkie reguły są w pliku JSON, więc żeby dodać nowy sklep albo kategorię,
@@ -173,6 +204,9 @@ Wydatki miesięczne (UAH):
   Prognoza na następny miesiąc: 13942.47
 
 Wczytano transakcji: 269, pominięto: 85
+
+Zapisano raport do pliku: raporty/raport_2026-11-16_16-09-49.txt
+Zapisano wykres do pliku: raporty/wykres_kategorii_2026-11-16_16-09-49.png
 ```
 
 Jeśli płatność była w hrywnach, pokazywana jest tylko kwota w UAH.
@@ -180,6 +214,6 @@ Jeśli płatność była w hrywnach, pokazywana jest tylko kwota w UAH.
 ## Co jeszcze do zrobienia
 
 - ✅ statystyki na numpy (średnia, mediana, odchylenie standardowe, trend) – **Done**
-- zapis raportu do pliku tekstowego i wykresy (matplotlib),
+- ✅ zapis raportu do pliku tekstowego i wykresy (matplotlib) – **Done**
 - menu w konsoli,
 - wczytywanie wyciągów w formacie XLSX i PDF.
