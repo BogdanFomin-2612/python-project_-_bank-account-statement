@@ -37,8 +37,15 @@ def czy_pominac(transakcja, reguly):
     return pasuje(transakcja.opis, reguly["pomijane"])
 
 
-def czy_zwrot(opis):
-    return re.match(WZORZEC_ZWROTU, opis) is not None
+def czy_zwrot(transakcja, reguly):
+    # Zwrot poznajemy na dwa sposoby, bo każdy format wyciągu opisuje go inaczej.
+    # W CSV i XLSX bank pisze wprost "Cancellation. Dott".
+    if re.match(WZORZEC_ZWROTU, transakcja.opis):
+        return True
+    # W PDF opisy są zamienione na ogólne nazwy ("Auto") i ten ślad znika.
+    # Zostaje sam MCC: dodatnia kwota z kodem sklepu to nie wpływ, tylko
+    # oddane pieniądze - prawdziwe wpływy mają inne kody (przelew, doładowanie).
+    return transakcja.kwota > 0 and str(transakcja.mcc) in reguly["mcc"]
 
 
 def znajdz_kategorie(transakcja, reguly):
@@ -66,7 +73,7 @@ def kategoryzuj(transakcje, reguly):
     for transakcja in transakcje:
         if czy_pominac(transakcja, reguly):
             continue
-        transakcja.zwrot = czy_zwrot(transakcja.opis)
+        transakcja.zwrot = czy_zwrot(transakcja, reguly)
         transakcja.kategoria = znajdz_kategorie(transakcja, reguly)
         wynik.append(transakcja)
     return wynik

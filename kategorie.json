@@ -1,7 +1,15 @@
 {
-    "pomijane": ["копилка"],
+    "pomijane": [
+        "копилка",
+        "^jar$",
+        "^partial withdrawal$"
+    ],
     "slowa_kluczowe": {
-        "Subskrypcje": ["youtube", "spotify", "netflix"]
+        "Subskrypcje": [
+            "youtube",
+            "spotify",
+            "netflix"
+        ]
     },
     "mcc": {
         "5411": "Spożywcze",
