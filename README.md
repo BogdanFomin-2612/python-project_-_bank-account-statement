@@ -278,5 +278,4 @@ Jeśli płatność była w hrywnach, pokazywana jest tylko kwota w UAH.
 - ✅ zapis raportu do pliku tekstowego i wykresy (matplotlib) – **Done**
 - ✅ wczytywanie wyciągów w formacie XLSX i PDF – **Done**
 - menu w konsoli,
-- generator przykładowych danych do pokazania programu,
-- dokumentacja i ściągawka na obronę.
+- generator przykładowych danych do pokazania programu
