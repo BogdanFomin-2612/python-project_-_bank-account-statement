@@ -4,11 +4,23 @@ from datetime import datetime
 
 from monobank.czytniki import wczytaj_plik
 from monobank.kategorie import wczytaj_reguly, kategoryzuj
-from monobank.analiza import (sumy_wedlug_kategorii, suma_cashbacku, suma_prowizji,
-                              wydatki_dzienne, statystyki, srednia_kroczaca,
-                              wydatki_miesieczne, prognoza_na_nastepny_miesiac)
-from monobank.raport import (wypisz_sumy_kategorii, wypisz_cashback_i_prowizje,
-                             wypisz_statystyki_dzienne, wypisz_miesiace, zapisz_raport)
+from monobank.analiza import (
+    sumy_wedlug_kategorii,
+    suma_cashbacku,
+    suma_prowizji,
+    wydatki_dzienne,
+    statystyki,
+    srednia_kroczaca,
+    wydatki_miesieczne,
+    prognoza_na_nastepny_miesiac,
+)
+from monobank.raport import (
+    wypisz_sumy_kategorii,
+    wypisz_cashback_i_prowizje,
+    wypisz_statystyki_dzienne,
+    wypisz_miesiace,
+    zapisz_raport,
+)
 from monobank.wykresy import zapisz_wykres_kategorii
 from monobank.bledy import BladWczytywania, NieobslugiwanyFormat
 
@@ -18,7 +30,11 @@ KATALOG_RAPORTOW = "raporty"
 
 def main():
     # strip('"') - Windows dodaje cudzysłowy przy "Kopiuj jako ścieżkę"
-    sciezka = input("Podaj ścieżkę do pliku z wyciągiem (np. dane/example_report.csv): ").strip().strip('"')
+    sciezka = (
+        input("Podaj ścieżkę do pliku z wyciągiem (np. dane/example_report.csv): ")
+        .strip()
+        .strip('"')
+    )
 
     try:
         wszystkie = wczytaj_plik(sciezka)
@@ -32,17 +48,24 @@ def main():
 
     transakcje = kategoryzuj(wszystkie, reguly)
 
-    linie_transakcji = [f"{numer:3}. {transakcja}" for numer, transakcja in enumerate(transakcje, start=1)]
+    linie_transakcji = [
+        f"{numer:3}. {transakcja}"
+        for numer, transakcja in enumerate(transakcje, start=1)
+    ]
     print("\n".join(linie_transakcji))
 
     sumy = sumy_wedlug_kategorii(transakcje)
     raport = list(linie_transakcji)
     raport += wypisz_sumy_kategorii(sumy)
-    raport += wypisz_cashback_i_prowizje(suma_cashbacku(transakcje), suma_prowizji(transakcje))
+    raport += wypisz_cashback_i_prowizje(
+        suma_cashbacku(transakcje), suma_prowizji(transakcje)
+    )
 
     dzienne = wydatki_dzienne(transakcje)
     if len(dzienne) > 0:
-        raport += wypisz_statystyki_dzienne(statystyki(dzienne), srednia_kroczaca(dzienne))
+        raport += wypisz_statystyki_dzienne(
+            statystyki(dzienne), srednia_kroczaca(dzienne)
+        )
 
     miesiace, kwoty = wydatki_miesieczne(transakcje)
     raport += wypisz_miesiace(miesiace, kwoty, prognoza_na_nastepny_miesiac(kwoty))
